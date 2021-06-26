@@ -5,7 +5,8 @@ from typing import Optional, Sequence
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-i')
+    parser.add_argument('-i', '--input',help="Specify the input String.")
+    parser.add_argument('-o', '--output',help="Specify the output file.")
 
     args   = parser.parse_args(argv)
 
