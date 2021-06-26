@@ -1,8 +1,5 @@
 from encryption import *
 
-LIMITS_Upp = (65, 90)
-LIMITS_Dwn = (97, 122)
-
 def getED(inputStr):
     return inputStr[:int(len(inputStr)/2)], inputStr[int(len(inputStr)/2):]
 
@@ -36,10 +33,3 @@ def decrypt(input: str, key: str):
     result = transformOut(input).replace(key, '')[::-1]
 
     return result
-
-
-input = "JHEae1a5ALBdRdd4fdbebecaf"
-key = "1dad54"
-key2 = "dsa"
-
-print(input + " ===========> " + decrypt(input, key))

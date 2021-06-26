@@ -1,17 +1,21 @@
 import argparse
 import pprint
 from typing import Optional, Sequence
-from Utilities import *
+from Utilities import encryption, decryption
 
 def read(parser, args: dict):
     if args['input'] is not None and args['key'] is None:
         parser.error("argument -i/--input requires argument --key.")
 
-    if args['decrypt']:
-        pprint.pprint(args['decrypt'])
+    if args['decrypt'] and (args['key'] is None or args['input'] is None):
+        parser.error("argument -d/--decrypt requires argument --key and argument --input.")
+    else:
+        decryption.decrypt(args['input'], args['key'])
 
-    if args['encrypt']:
-        pprint.pprint(args['encrypt'])
+    if args['encrypt'] and (args['key'] is None or args['input'] is None):
+        parser.error("argument -e/--encrypt requires argument --key and argument --input.")
+    else:
+        encryption.encrypt(args['input'], args['key'])
     
     try:
         with args.file as file:
