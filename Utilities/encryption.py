@@ -1,5 +1,3 @@
-import math
-
 LIMITS_Upp = (65, 90)
 LIMITS_Dwn = (97, 122)
 

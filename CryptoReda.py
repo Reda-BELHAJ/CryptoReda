@@ -9,13 +9,15 @@ def read(parser, args: dict):
 
     if args['decrypt'] and (args['key'] is None or args['input'] is None):
         parser.error("argument -d/--decrypt requires argument --key and argument --input.")
-    else:
-        decryption.decrypt(args['input'], args['key'])
+    elif args['decrypt'] and (args['key'] is not None and args['input'] is not None):
+        pprint.pprint("Decryption")
+        pprint.pprint(decryption.decrypt(args['input'], args['key']))
 
     if args['encrypt'] and (args['key'] is None or args['input'] is None):
         parser.error("argument -e/--encrypt requires argument --key and argument --input.")
-    else:
-        encryption.encrypt(args['input'], args['key'])
+    elif args['encrypt'] and (args['key'] is not None and args['input'] is not None):
+        pprint.pprint("Encryption")
+        pprint.pprint(encryption.encrypt(args['input'], args['key']))
     
     try:
         with args.file as file:
@@ -38,7 +40,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     read(parser ,vars(args))
 
-    pprint.pprint(vars(args))
+    # pprint.pprint(vars(args))
 
     return 0
 

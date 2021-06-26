@@ -1,4 +1,4 @@
-from encryption import *
+from .encryption import *
 
 def getED(inputStr):
     return inputStr[:int(len(inputStr)/2)], inputStr[int(len(inputStr)/2):]
