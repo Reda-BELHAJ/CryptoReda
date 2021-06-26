@@ -4,40 +4,57 @@ import sys
 from typing import Optional, Sequence
 from Utilities import encryption, decryption
 
-def write_if_possible(args: dict):
+def write_if_possible(args):
     try:
         with args.output as file:
             pprint.pprint(args['output'])
     except:
         pass
 
-def read_if_possible(args: dict):
+def read_if_possible(args):
     try:
         with args.file as file:
-            pprint.pprint(args['file'])
+            result = file.read().replace('\n', '')
     except:
-        pass
+        result = ""
+    
+    return result
 
-def read(parser, args: dict):
-    if args['input'] is not None and args['key'] is None:
+def get_input(parser, vars: dict, args):
+    if vars['input'] is not None and vars['key'] is None:
         parser.error("argument -i/--input requires argument --key.")
 
-    if args['decrypt'] and (args['key'] is None or args['input'] is None):
-        parser.error("argument -d/--decrypt requires argument --key and argument --input.")
-
-    if args['input'] is not None and args['file'] is not None:
+    if vars['input'] is not None and vars['file'] is not None:
         parser.error("argument -i/--input can't be with argument --file Choose one input argument.")
 
-    elif args['decrypt'] and (args['key'] is not None and args['input'] is not None):
+    if vars['file'] is not None and vars['key'] is None:
+        parser.error("argument -f/--file requires argument --key.")
+
+    if vars['input'] is not None:
+        input = vars['input']
+
+    if vars['file'] is not None:
+        input = read_if_possible(args)
+    
+    return input
+
+
+def read(parser, vars: dict, args):
+    input = get_input(parser, vars, args)
+
+    if vars['decrypt'] and (vars['key'] is None or input == ""):
+        parser.error("argument -d/--decrypt requires argument --key and argument --input or --file.")
+
+    elif vars['decrypt'] and (vars['key'] is not None and input != ""):
         pprint.pprint("Decryption")
-        pprint.pprint(decryption.decrypt(args['input'], args['key']))
+        pprint.pprint(decryption.decrypt(input, vars['key']))
 
-    if args['encrypt'] and (args['key'] is None or args['input'] is None):
-        parser.error("argument -e/--encrypt requires argument --key and argument --input.")
+    if vars['encrypt'] and (vars['key'] is None or input == "" ):
+        parser.error("argument -e/--encrypt requires argument --key and argument --input or --file.")
 
-    elif args['encrypt'] and (args['key'] is not None and args['input'] is not None):
+    elif vars['encrypt'] and (vars['key'] is not None and input != ""):
         pprint.pprint("Encryption")
-        pprint.pprint(encryption.encrypt(args['input'], args['key']))
+        pprint.pprint(encryption.encrypt(input, vars['key']))
     
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -56,7 +73,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     else:
         args   = parser.parse_args(argv)
 
-        read(parser, vars(args))
+        read(parser, vars(args), args)
 
         # pprint.pprint(vars(args))
 
