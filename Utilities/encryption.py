@@ -51,11 +51,11 @@ def encrypt(input: str, key: str):
 
 
 
-input = "Test"
+input = "RedaBELHAJ"
 key = "1dad54"
 key2 = "dsa"
 
-print(encrypt(input, key2))
+print(encrypt(input, key))
 
 # I. First Step
 # # 1. Reverse the input string
